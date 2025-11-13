@@ -60,6 +60,10 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PORT: ${APP_PORT}
       NODE_ENV: production
+      WB_API_URL: ${WB_API_URL:-https://common-api.wildberries.ru}
+      WB_API_KEY: ${WB_API_KEY}
+      GOOGLE_SERVICE_ACCOUNT: ${GOOGLE_SERVICE_ACCOUNT}
+      GOOGLE_SPREADSHEET_IDS: ${GOOGLE_SPREADSHEET_IDS}
 
     ports:
       - ${APP_PORT}:${APP_PORT}
