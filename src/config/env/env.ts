@@ -31,6 +31,10 @@ const envSchema = z.object({
     POSTGRES_USER: z.string(),
     POSTGRES_PASSWORD: z.string(),
     APP_PORT: z.union([z.undefined(), coerceNumberFromString()]),
+    WB_API_URL: z.union([
+        z.undefined(),
+        z.string().url(),
+    ]).transform((value) => value ?? "https://common-api.wildberries.ru"),
     WB_API_KEY: z.string(),
     GOOGLE_SPREADSHEET_IDS: z
         .string()
@@ -69,6 +73,7 @@ const env = envSchema.parse({
     POSTGRES_USER: process.env.POSTGRES_USER,
     POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
     APP_PORT: process.env.APP_PORT,
+    WB_API_URL: process.env.WB_API_URL,
     WB_API_KEY: process.env.WB_API_KEY,
     GOOGLE_SERVICE_ACCOUNT: process.env.GOOGLE_SERVICE_ACCOUNT,
     GOOGLE_SPREADSHEET_IDS: process.env.GOOGLE_SPREADSHEET_IDS ?? "",
