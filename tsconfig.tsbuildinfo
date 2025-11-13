@@ -1,0 +1,1 @@
+{"root":["./src/app.ts","./src/config/env/config.ts","./src/config/knex/knexfile.ts","./src/postgres/knex.ts","./src/utils/knex.ts","./src/config/knex/migration.stub.js","./src/config/knex/seed.stub.js","./src/postgres/migrations/20250227184908_spreadsheets.js","./src/postgres/seeds/name.js"],"version":"5.7.3"}
