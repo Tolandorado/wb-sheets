@@ -204,6 +204,10 @@ FROM spreadsheets;
 ```bash
 docker compose logs app | grep -i "tariff"
 ```
+**Windows PowerShell:**
+```powershell
+docker compose logs app | Select-String -Pattern "tariff" -CaseSensitive:$false
+```
 
 **Ожидаемые сообщения:**
 - ✅ `Fetching WB tariffs for boxes` - запрос к API начат
@@ -575,11 +579,19 @@ npm run dev
    ```bash
    # Linux/Mac
    docker compose logs app | grep -i migrations
-   
+
    # Windows PowerShell
    docker compose logs app | Select-String -Pattern "migrations" -CaseSensitive:$false
    ```
-3. При необходимости пересоздайте БД: `docker compose down --volumes && docker compose up`
+3. При необходимости пересоздайте БД:
+   - Для Linux/Mac:
+     ```bash
+     docker compose down --volumes && docker compose up
+     ```
+   - Для Windows PowerShell:
+     ```powershell
+     docker compose down --volumes; docker compose up
+     ```
 
 ### Дополнительные команды для диагностики
 
