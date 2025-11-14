@@ -3,7 +3,6 @@
  * @returns {Promise<void>}
  */
 export async function seed(knex) {
-    // Получаем список spreadsheet IDs из переменной окружения
     const spreadsheetIds =
         process.env.GOOGLE_SPREADSHEET_IDS?.split(",")
             .map((id) => id.trim())

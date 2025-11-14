@@ -26,22 +26,18 @@ export class GoogleSheetsClient {
         data: string[][],
     ): Promise<void> {
         try {
-            // Проверяем существование листа, если нет - создаем
             await this.ensureSheetExists(spreadsheetId, sheetName);
 
-            // Очищаем лист
             await this.sheets.spreadsheets.values.clear({
                 spreadsheetId,
                 range: `${sheetName}!A:Z`,
             });
 
-            // Если данных нет, просто очищаем и выходим
             if (data.length === 0) {
                 logger.warn(`No data to write to ${spreadsheetId}/${sheetName}`);
                 return;
             }
 
-            // Записываем данные
             await this.sheets.spreadsheets.values.update({
                 spreadsheetId,
                 range: `${sheetName}!A1`,

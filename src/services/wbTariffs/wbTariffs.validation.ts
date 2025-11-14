@@ -1,12 +1,10 @@
 import { z } from "zod";
 
-// Более гибкая валидация для числовых строк - разрешает пустые строки, null, пробелы, и различные форматы
 const numericString = z.preprocess(
     (value) => {
         if (value === null || value === undefined) return "0";
         if (typeof value === "number") return value.toString();
         if (typeof value === "string") {
-            // Убираем пробелы (для формата "1 039" -> "1039")
             const cleaned = value.trim().replace(/\s+/g, "");
             if (cleaned === "" || cleaned === "-" || cleaned === "+") return "0";
             return cleaned;

@@ -37,10 +37,8 @@ export class GoogleSheetsService {
 
         logger.info(`Found ${tariffs.length} tariffs to sync to ${spreadsheets.length} spreadsheets`);
 
-        // Преобразуем данные в формат для Google Sheets
         const sheetData = this.formatTariffsForSheets(tariffs);
 
-        // Синхронизируем каждую таблицу
         for (const spreadsheet of spreadsheets) {
             try {
                 await this.client.updateSheet(
@@ -55,7 +53,6 @@ export class GoogleSheetsService {
                     `Failed to sync ${spreadsheet.spreadsheetId}`,
                     error instanceof Error ? error.message : String(error),
                 );
-                // Продолжаем синхронизацию остальных таблиц даже если одна упала
             }
         }
 

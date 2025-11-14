@@ -45,8 +45,6 @@ const envSchema = z.object({
                 .filter(Boolean),
         ),
     GOOGLE_SERVICE_ACCOUNT: z.string().transform((value, ctx) => {
-        const candidates = [value];
-        // Try to treat value as base64-encoded JSON if direct parse fails.
         try {
             return googleServiceAccountSchema.parse(JSON.parse(value));
         } catch {
