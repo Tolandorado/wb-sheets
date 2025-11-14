@@ -6,17 +6,23 @@ logger.level = process.env.LOG_LEVEL ?? "info";
 
 const service = new WbTariffsService();
 
-async function runCollection(): Promise<void> {
+async function runCollection(onSuccess?: () => void): Promise<void> {
     try {
         await service.collectTariffs();
+        if (onSuccess) {
+            onSuccess();
+        }
     } catch (error) {
         logger.error("Failed to collect WB tariffs", { error });
     }
 }
 
-export function startTariffsCollector(intervalMinutes = 60): void {
+export function startTariffsCollector(
+    intervalMinutes = 60,
+    onSuccess?: () => void,
+): void {
     logger.info(`Starting tariffs collector every ${intervalMinutes} minutes`);
-    runCollection();
+    void runCollection(onSuccess);
     const intervalMs = intervalMinutes * 60 * 1000;
     setInterval(() => {
         void runCollection();
