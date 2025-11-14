@@ -39,6 +39,7 @@ POSTGRES_PASSWORD=postgres
 APP_PORT=5000
 
 # Токен API Wildberries
+WB_API_URL=https://common-api.wildberries.ru
 WB_API_KEY=ваш_токен_wb_api
 
 # JSON сервисного аккаунта Google (ВАЖНО: используйте base64!)
