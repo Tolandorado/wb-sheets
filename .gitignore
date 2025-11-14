@@ -2,3 +2,4 @@ node_modules
 .local
 .env
 dist
+service-account.json
