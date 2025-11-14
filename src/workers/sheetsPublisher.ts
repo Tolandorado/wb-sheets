@@ -27,10 +27,8 @@ export function startSheetsPublisher(intervalMinutes = 30): void {
     logger.info(`Starting Google Sheets publisher every ${intervalMinutes} minutes`);
     const intervalMs = intervalMinutes * 60 * 1000;
 
-    // Запускаем сразу при старте
     void runPublish();
 
-    // Затем запускаем по расписанию
     setInterval(() => {
         void runPublish();
     }, intervalMs);
