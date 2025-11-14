@@ -233,6 +233,10 @@ docker compose exec postgres psql -U postgres -d postgres -c "SELECT warehouse_n
 ```bash
 docker compose logs app | grep -i "sheets\|sync"
 ```
+**Windows PowerShell:**
+```powershell
+docker compose logs app | Select-String -Pattern "sheets|sync" -CaseSensitive:$false
+```
 
 **Ожидаемые сообщения:**
 - ✅ `Starting Google Sheets sync` - синхронизация начата
@@ -283,6 +287,10 @@ docker compose exec postgres psql -U postgres -d postgres -c "SELECT COUNT(*) FR
 ```bash
 docker compose logs app --since 1h | grep -i "tariff"
 ```
+**Windows PowerShell:**
+```powershell
+docker compose logs app --since 1h | Select-String -Pattern "tariff" -CaseSensitive:$false
+```
 
 Должны быть повторные сообщения о сборе тарифов.
 
@@ -290,6 +298,10 @@ docker compose logs app --since 1h | grep -i "tariff"
 
 ```bash
 docker compose logs app --since 30m | grep -i "sheets\|sync"
+```
+**Windows PowerShell:**
+```powershell
+docker compose logs app --since 30m | Select-String -Pattern "sheets|sync" -CaseSensitive:$false
 ```
 
 Должны быть повторные сообщения о синхронизации.
@@ -323,6 +335,10 @@ docker compose exec postgres psql -U postgres -d postgres -c "SELECT spreadsheet
 docker compose restart app
 docker compose logs app | grep -i "error\|fail"
 ```
+**Windows PowerShell:**
+```powershell
+docker compose logs app | Select-String -Pattern "error|fail" -CaseSensitive:$false
+```
 
 Должны быть логи об ошибках, но приложение должно продолжать работать.
 
@@ -334,6 +350,10 @@ docker compose logs app | grep -i "error\|fail"
 # В .env измените GOOGLE_SPREADSHEET_IDS
 docker compose restart app
 docker compose logs app | grep -i "sheets\|error"
+```
+**Windows PowerShell:**
+```powershell
+docker compose logs app | Select-String -Pattern "sheets|error" -CaseSensitive:$false
 ```
 
 Должны быть логи об ошибках доступа к таблице, но приложение должно продолжать работать.
@@ -349,9 +369,13 @@ docker compose logs app --tail 50
 
 # Логи с фильтром по тарифам
 docker compose logs app | grep -i tariff
+# Windows PowerShell
+docker compose logs app | Select-String -Pattern "tariff" -CaseSensitive:$false
 
 # Логи с фильтром по Google Sheets
 docker compose logs app | grep -i "sheets\|sync"
+# Windows PowerShell
+docker compose logs app | Select-String -Pattern "sheets|sync" -CaseSensitive:$false
 
 # Количество тарифов в БД
 docker compose exec postgres psql -U postgres -d postgres -c "SELECT COUNT(*) FROM wb_tariffs_box_daily;"
@@ -493,6 +517,8 @@ npm run dev
 
 1. Проверьте валидность `WB_API_KEY`
 2. Проверьте логи воркера: `docker compose logs app | grep tariffs`
+   - **Windows PowerShell:**  
+     `docker compose logs app | Select-String -Pattern "tariffs" -CaseSensitive:$false`
 3. Проверьте подключение к API WB
 
 ### Данные не синхронизируются с Google Sheets
