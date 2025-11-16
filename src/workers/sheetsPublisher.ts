@@ -32,5 +32,6 @@ export function startSheetsPublisher(intervalMinutes = 30): void {
     setInterval(() => {
         void runPublish();
     }, intervalMs);
+    //TODO Добавить джиттер к интервалу и корректную отмену таймеров при завершении
 }
 

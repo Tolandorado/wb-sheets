@@ -1,4 +1,4 @@
-import { upsertTariffs } from "#postgres/repositories/wbTariffs.repository.js";
+import { upsertTariffsChunked } from "#postgres/repositories/wbTariffs.repository.js";
 import env from "#config/env/env.js";
 import log4js from "log4js";
 import { WbTariffsClient, mapWarehouseRows } from "./wbTariffs.client.js";
@@ -17,7 +17,7 @@ export class WbTariffsService {
             tariffDate.toISOString().split("T")[0],
         );
         const rows = mapWarehouseRows(response, tariffDate, fetchedAt);
-        await upsertTariffs(rows);
+        await upsertTariffsChunked(rows, 1000);
         logger.info("WB tariffs updated", { rows: rows.length });
     }
 }

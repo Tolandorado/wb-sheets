@@ -41,10 +41,11 @@ export class GoogleSheetsService {
 
         for (const spreadsheet of spreadsheets) {
             try {
-                await this.client.updateSheet(
+                await this.client.updateSheetChunked(
                     spreadsheet.spreadsheetId,
                     spreadsheet.sheetName,
                     sheetData,
+                    1000,
                 );
                 await updateLastSyncedAt(spreadsheet.spreadsheetId);
                 logger.info(`Synced ${spreadsheet.spreadsheetId}/${spreadsheet.sheetName}`);

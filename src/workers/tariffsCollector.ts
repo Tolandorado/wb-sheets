@@ -3,6 +3,7 @@ import { WbTariffsService } from "#services/wbTariffs/wbTariffs.service.js";
 
 const logger = log4js.getLogger("tariffs-collector-worker");
 logger.level = process.env.LOG_LEVEL ?? "info";
+//TODO Добавить ограничение параллелизма: предотвращать перекрытие запусков при долгих запросах
 
 const service = new WbTariffsService();
 
@@ -27,5 +28,6 @@ export function startTariffsCollector(
     setInterval(() => {
         void runCollection();
     }, intervalMs);
+    //TODO Добавить джиттер к интервалам, таймауты запросов и отмену при остановке приложения
 }
 
