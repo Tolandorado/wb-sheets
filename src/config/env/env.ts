@@ -22,6 +22,7 @@ const googleServiceAccountSchema = z.object({
     client_x509_cert_url: z.string().url(),
     universe_domain: z.union([z.string(), z.undefined()]),
 });
+//Warning Никогда не логировать значения из GOOGLE_SERVICE_ACCOUNT и других секретов
 
 const envSchema = z.object({
     NODE_ENV: z.union([z.undefined(), z.enum(["development", "production"])]),

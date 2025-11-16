@@ -20,6 +20,7 @@ export async function up(knex) {
         table.timestamp("fetched_at", { useTz: true }).notNullable().defaultTo(knex.fn.now());
         table.timestamps(true, true);
         table.unique(["tariff_date", "warehouse_name"]);
+        table.index(["tariff_date", "box_delivery_coef_expr"], "wb_tariffs_tariff_coef_idx");
     });
 
     await knex.schema.alterTable("spreadsheets", (table) => {
@@ -28,6 +29,7 @@ export async function up(knex) {
         table.timestamp("last_synced_at", { useTz: true });
         table.timestamp("created_at", { useTz: true }).notNullable().defaultTo(knex.fn.now());
         table.timestamp("updated_at", { useTz: true }).notNullable().defaultTo(knex.fn.now());
+        table.index(["is_active", "created_at"], "spreadsheets_active_created_idx");
     });
 }
 

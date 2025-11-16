@@ -5,6 +5,7 @@ import log4js from "log4js";
 
 const logger = log4js.getLogger("app");
 logger.level = process.env.LOG_LEVEL ?? "info";
+//TODO Добавить обработку SIGINT/SIGTERM для корректного завершения, очистки таймеров и закрытия соединений БД
 
 async function bootstrap() {
     logger.info("Running migrations");
