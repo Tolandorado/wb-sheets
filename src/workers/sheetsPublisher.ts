@@ -1,22 +1,17 @@
 import { GoogleSheetsService } from "#services/googleSheets/googleSheets.service.js";
 import log4js from "log4js";
+import { createWorker, type WorkerController } from "#utils/worker.js";
 
 const logger = log4js.getLogger("sheets-publisher");
 logger.level = process.env.LOG_LEVEL ?? "info";
 
 const service = new GoogleSheetsService();
+let controller: WorkerController | undefined;
 
 async function runPublish(): Promise<void> {
-    try {
-        logger.info("Running Google Sheets sync");
-        await service.syncAllSpreadsheets();
-        logger.info("Google Sheets sync completed");
-    } catch (error) {
-        logger.error(
-            "Failed to sync Google Sheets",
-            error instanceof Error ? error.message : String(error),
-        );
-    }
+    logger.info("Running Google Sheets sync");
+    await service.syncAllSpreadsheets();
+    logger.info("Google Sheets sync completed");
 }
 
 /**
@@ -25,13 +20,11 @@ async function runPublish(): Promise<void> {
  */
 export function startSheetsPublisher(intervalMinutes = 30): void {
     logger.info(`Starting Google Sheets publisher every ${intervalMinutes} minutes`);
-    const intervalMs = intervalMinutes * 60 * 1000;
+    controller = createWorker(runPublish, intervalMinutes, true);
+    controller.start();
+}
 
-    void runPublish();
-
-    setInterval(() => {
-        void runPublish();
-    }, intervalMs);
-    //TODO Добавить джиттер к интервалу и корректную отмену таймеров при завершении
+export function stopSheetsPublisher(): void {
+    controller?.stop();
 }
 
