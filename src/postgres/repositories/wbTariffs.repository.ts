@@ -103,7 +103,6 @@ export async function getLatestTariffsForDate(
         )
         .where("tariff_date", tariffDate)
         .orderBy("box_delivery_coef_expr", "asc");
-        //TODO Добавить индекс (tariff_date, box_delivery_coef_expr) для ускорения сортировки
 
     return rows as TariffRowForSheets[];
 }

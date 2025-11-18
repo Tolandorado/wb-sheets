@@ -1,11 +1,10 @@
 import knex, { migrate, seed } from "#postgres/knex.js";
-import { startTariffsCollector } from "#workers/tariffsCollector.js";
-import { startSheetsPublisher } from "#workers/sheetsPublisher.js";
+import { startTariffsCollector, stopTariffsCollector } from "#workers/tariffsCollector.js";
+import { startSheetsPublisher, stopSheetsPublisher } from "#workers/sheetsPublisher.js";
 import log4js from "log4js";
 
 const logger = log4js.getLogger("app");
 logger.level = process.env.LOG_LEVEL ?? "info";
-//TODO Добавить обработку SIGINT/SIGTERM для корректного завершения, очистки таймеров и закрытия соединений БД
 
 async function bootstrap() {
     logger.info("Running migrations");
@@ -28,3 +27,15 @@ bootstrap().catch((error) => {
     logger.fatal("Application failed to start", { error });
     void knex.destroy().finally(() => process.exit(1));
 });
+
+function gracefulShutdown(code: string): void {
+    logger.info(`Received ${code}, shutting down`);
+    try {
+        stopTariffsCollector();
+        stopSheetsPublisher();
+    } catch {}
+    void knex.destroy().finally(() => process.exit(0));
+}
+
+process.on("SIGINT", () => gracefulShutdown("SIGINT"));
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
